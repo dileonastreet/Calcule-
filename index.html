@@ -1,4 +1,4 @@
-<!doctype html>
+ <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8">
@@ -291,7 +291,6 @@
 
   <script>
     const TVA_RATE = 0.20;
-
     const form = document.getElementById("calc-form");
     const results = document.getElementById("results");
     const errorBox = document.getElementById("error");
@@ -305,7 +304,6 @@
 
     function calculate(event) {
       if (event) event.preventDefault();
-
       errorBox.textContent = "";
       results.innerHTML = "";
 
@@ -313,30 +311,21 @@
       const adsBeforeTax = Number(document.getElementById("ads").value);
       const desiredProfit = Number(document.getElementById("profit").value);
       const delivery = Number(document.getElementById("delivery").value);
-
-      const quantityText = document.getElementById("quantities").value;
-      const quantities = quantityText
-        .split(/[،,\s]+/)
-        .filter(Boolean)
-        .map(Number);
+      const quantities = document.getElementById("quantities").value
+        .split(/[،,\s]+/).filter(Boolean).map(Number);
 
       const values = [unitCost, adsBeforeTax, desiredProfit, delivery];
-
       if (values.some(value => !Number.isFinite(value) || value < 0)) {
         errorBox.textContent = "تأكد من إدخال أرقام صحيحة موجبة أو صفرية.";
         return;
       }
-
-      if (quantities.length === 0 ||
-          quantities.some(quantity => !Number.isInteger(quantity) || quantity <= 0)) {
+      if (!quantities.length || quantities.some(q => !Number.isInteger(q) || q <= 0)) {
         errorBox.textContent = "أدخل كميات صحيحة أكبر من صفر، مثل 5, 10, 15.";
         return;
       }
 
       const adTaxPerOrder = adsBeforeTax * TVA_RATE;
       const adsWithTax = adsBeforeTax + adTaxPerOrder;
-
-      // سعر البيع = ثمن المنتج + الإعلان بعد TVA + الربح المطلوب
       const sellingPrice = unitCost + adsWithTax + desiredProfit;
       const priceIncludingDelivery = sellingPrice + delivery;
 
@@ -348,14 +337,16 @@
         const totalCost = goodsTotal + adsAfterTaxTotal;
         const salesTotal = sellingPrice * quantity;
         const profitTotal = salesTotal - totalCost;
-
-        return `
-          <tr>
-            <td class="fw-bold"><LaTex>{quantity}</td>             <td></LaTex>{formatDH(goodsTotal)}</td>
-            <td><LaTex>{formatDH(adsBeforeTaxTotal)}</td>             <td></LaTex>{formatDH(taxTotal)}</td>
-            <td><LaTex>{formatDH(adsAfterTaxTotal)}</td>             <td></LaTex>{formatDH(totalCost)}</td>
-            <td><LaTex>{formatDH(salesTotal)}</td>             <td class="fw-bold text-success"></LaTex>{formatDH(profitTotal)}</td>
-          </tr>`;
+        return `<tr>
+          <td class="fw-bold">${quantity}</td>
+          <td>${formatDH(goodsTotal)}</td>
+          <td>${formatDH(adsBeforeTaxTotal)}</td>
+          <td>${formatDH(taxTotal)}</td>
+          <td>${formatDH(adsAfterTaxTotal)}</td>
+          <td>${formatDH(totalCost)}</td>
+          <td>${formatDH(salesTotal)}</td>
+          <td class="fw-bold text-success">${formatDH(profitTotal)}</td>
+        </tr>`;
       }).join("");
 
       results.innerHTML = `
@@ -363,61 +354,30 @@
           <div class="row g-3 align-items-center">
             <div class="col-12 col-lg-5">
               <div class="result-label">سعر البيع المطلوب للقطعة دون التوصيل</div>
-              <div class="result-price"><LaTex>{formatDH(sellingPrice)}</div></LaTex>{delivery > 0
-                ? `<div class="mt-2">إذا تحملت التوصيل: <strong>${formatDH(priceIncludingDelivery)}</strong></div>`
-                : ""}
+              <div class="result-price">${formatDH(sellingPrice)}</div>
+              ${delivery > 0 ? `<div class="mt-2">إذا تحملت التوصيل: <strong>${formatDH(priceIncludingDelivery)}</strong></div>` : ""}
             </div>
-
             <div class="col-12 col-lg-7">
               <div class="row g-2">
-                <div class="col-6">
-                  <div class="metric">
-                    <small>الإعلان قبل TVA</small>
-                    <strong>${formatDH(adsBeforeTax)}</strong>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="metric">
-                    <small>TVA ‏20% لكل طلب</small>
-                    <strong><LaTex>{formatDH(adTaxPerOrder)}</strong>                   </div>                 </div>                 <div class="col-12">                   <div class="metric">                     <small>الإعلان شامل TVA لكل طلب</small>                     <strong></LaTex>{formatDH(adsWithTax)}</strong>
-                  </div>
-                </div>
+                <div class="col-6"><div class="metric"><small>الإعلان قبل TVA</small><strong>${formatDH(adsBeforeTax)}</strong></div></div>
+                <div class="col-6"><div class="metric"><small>TVA ‏20% لكل طلب</small><strong>${formatDH(adTaxPerOrder)}</strong></div></div>
+                <div class="col-12"><div class="metric"><small>الإعلان شامل TVA لكل طلب</small><strong>${formatDH(adsWithTax)}</strong></div></div>
               </div>
             </div>
           </div>
         </section>
-
         <h3 class="h5 fw-bold mt-4 mb-2">ملخص الكميات</h3>
-        <div class="table-wrap">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>الكمية</th>
-                <th>ثمن البضاعة</th>
-                <th>الإعلان قبل TVA</th>
-                <th>TVA 20%</th>
-                <th>الإعلان شامل TVA</th>
-                <th>إجمالي التكلفة*</th>
-                <th>إجمالي المبيعات</th>
-                <th>الربح الصافي</th>
-              </tr>
-            </thead>
-            <tbody>${tableRows}</tbody>
-          </table>
-        </div>
-
-        <p class="hint mt-3">
-          * إجمالي التكلفة يشمل ثمن البضاعة والإعلان بعد إضافة TVA، ولا يشمل التوصيل.
-        </p>`;
+        <div class="table-wrap"><table class="table table-hover">
+          <thead><tr>
+            <th>الكمية</th><th>ثمن البضاعة</th><th>الإعلان قبل TVA</th><th>TVA 20%</th>
+            <th>الإعلان شامل TVA</th><th>إجمالي التكلفة*</th><th>إجمالي المبيعات</th><th>الربح الصافي</th>
+          </tr></thead><tbody>${tableRows}</tbody>
+        </table></div>
+        <p class="hint mt-3">* إجمالي التكلفة يشمل ثمن البضاعة والإعلان بعد إضافة TVA، ولا يشمل التوصيل.</p>`;
     }
 
-    // الحساب عند الضغط على الزر
     form.addEventListener("submit", calculate);
-
-    // إعادة الحساب عند تغيير أي قيمة
     form.addEventListener("input", calculate);
-
-    // عرض نتيجة أولية عند فتح الصفحة
     calculate();
   </script>
 </body>
