@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f766e">
+  <title>حاسبة تكلفة التجارة وسعر البيع</title>
+  <style>
+    :root { color-scheme: light; --ink:#17212b; --muted:#64748b; --line:#dbe4e8; --teal:#0f766e; --pale:#f0fdfa; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#f4f7f8; color:var(--ink); font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif; line-height:1.6; }
+    main { max-width:960px; margin:32px auto; padding:0 16px; }
+    .card { background:#fff; border:1px solid var(--line); border-radius:18px; padding:24px; box-shadow:0 8px 28px #0f172a0a; }
+    h1 { margin:0 0 6px; font-size:clamp(1.5rem,4vw,2rem); }
+    .intro { margin:0 0 22px; color:var(--muted); }
+    .form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:16px; }
+    label { display:block; font-weight:650; margin-bottom:6px; }
+    input { width:100%; border:1px solid #cbd5e1; border-radius:10px; padding:12px; font:inherit; background:white; }
+    input:focus { outline:3px solid #99f6e4; border-color:var(--teal); }
+    .hint { color:var(--muted); font-size:.87rem; margin-top:4px; }
+    button { cursor:pointer; border:0; border-radius:10px; background:var(--teal); color:#fff; padding:12px 18px; font:inherit; font-weight:700; margin-top:18px; }
+    button:hover { background:#115e59; }
+    .result { margin-top:22px; padding:18px; border-radius:14px; background:var(--pale); border:1px solid #99f6e4; }
+    .price { font-size:1.35rem; font-weight:800; color:#115e59; }
+    .table-wrap { overflow-x:auto; margin-top:18px; }
+    table { width:100%; border-collapse:collapse; min-width:680px; }
+    th,td { padding:11px 10px; border-bottom:1px solid var(--line); text-align:right; white-space:nowrap; }
+    th { background:#f8fafc; }
+    .note { color:var(--muted); font-size:.9rem; margin:16px 0 0; }
+    .error { color:#b91c1c; font-weight:600; margin-top:10px; }
+    @media (max-width:600px) { main { margin:16px auto; } .card { padding:18px; } }
+  </style>
+</head>
+<body>
+<main>
+  <section class="card">
+    <h1>حاسبة تكلفة التجارة وسعر البيع</h1>
+    <p class="intro">احسب تكلفة البضاعة والإعلانات، وسعر البيع الذي يحقق لك الربح المطلوب.</p>
+
+    <form id="calc-form">
+      <div class="form-grid">
+        <div>
+          <label for="unit-cost">ثمن شراء القطعة بالجملة (DH)</label>
+          <input id="unit-cost" type="number" min="0" step="0.01" value="110" required>
+        </div>
+        <div>
+          <label for="ads">تكلفة الإعلانات لكل طلب/بيعة (DH)</label>
+          <input id="ads" type="number" min="0" step="0.01" value="0" required>
+          <div class="hint">إذا كانت لديك ميزانية حملة كاملة، اقسمها على عدد الطلبات المتوقع.</div>
+        </div>
+        <div>
+          <label for="profit">الربح الصافي المطلوب لكل قطعة دون التوصيل (DH)</label>
+          <input id="profit" type="number" min="0" step="0.01" value="35" required>
+        </div>
+        <div>
+          <label for="delivery">التوصيل الذي ستتحمله أنت لكل قطعة (DH)</label>
+          <input id="delivery" type="number" min="0" step="0.01" value="0" required>
+          <div class="hint">اتركه 0 إذا كان الزبون يدفع التوصيل منفصلًا.</div>
+        </div>
+        <div>
+          <label for="quantities">الكميات المراد حسابها</label>
+          <input id="quantities" type="text" value="5, 10, 15" placeholder="مثال: 5, 10, 15">
+          <div class="hint">أدخل أرقامًا مفصولة بفواصل.</div>
+        </div>
+      </div>
+      <button type="submit">احسب الآن</button>
+      <div id="error" class="error" role="alert"></div>
+    </form>
+
+    <div id="results" aria-live="polite"></div>
+  </section>
+</main>
+<script>
+  const form = document.getElementById('calc-form');
+  const results = document.getElementById('results');
+  const errorBox = document.getElementById('error');
+  const fmt = n => new Intl.NumberFormat('ar-MA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n) + ' DH';
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    errorBox.textContent = '';
+    const unitCost = Number(document.getElementById('unit-cost').value);
+    const adsPerSale = Number(document.getElementById('ads').value);
+    const profitPerUnit = Number(document.getElementById('profit').value);
+    const deliveryPerUnit = Number(document.getElementById('delivery').value);
+    const rawQuantities = document.getElementById('quantities').value;
+    const quantities = rawQuantities.split(/[،,\s]+/).filter(Boolean).map(Number);
+
+    if ([unitCost, adsPerSale, profitPerUnit, deliveryPerUnit].some(n => !Number.isFinite(n) || n < 0)) {
+      errorBox.textContent = 'تحقق من إدخال أرقام موجبة أو صفرية في خانات التكاليف والربح.';
+      return;
+    }
+    if (!quantities.length || quantities.some(q => !Number.isInteger(q) || q <= 0)) {
+      errorBox.textContent = 'أدخل كميات صحيحة أكبر من صفر، مثل 5, 10, 15.';
+      return;
+    }
+
+    const priceWithoutDelivery = unitCost + adsPerSale + profitPerUnit;
+    const priceWithDelivery = priceWithoutDelivery + deliveryPerUnit;
+    const rows = quantities.map(q => {
+      const goods = unitCost * q;
+      const ads = adsPerSale * q;
+      const costs = goods + ads;
+      const sales = priceWithoutDelivery * q;
+      const netProfit = sales - costs;
+      return `<tr><td>${q}</td><td>${fmt(goods)}</td><td>${fmt(ads)}</td><td>${fmt(costs)}</td><td>${fmt(sales)}</td><td>${fmt(netProfit)}</td></tr>`;
+    }).join('');
+
+    results.innerHTML = `
+      <section class="result">
+        <div>سعر البيع المطلوب للقطعة، دون إضافة التوصيل:</div>
+        <div class="price">${fmt(priceWithoutDelivery)}</div>
+        ${deliveryPerUnit > 0 ? `<div>إذا كنت ستتحمل التوصيل أيضًا، يصبح السعر: <strong>${fmt(priceWithDelivery)}</strong></div>` : ''}
+        <div class="hint">الحساب: ثمن الشراء + الإعلان لكل بيعة + الربح الصافي المطلوب.</div>
+      </section>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>الكمية</th><th>ثمن البضاعة</th><th>الإعلانات</th><th>إجمالي التكلفة*</th><th>إجمالي المبيعات</th><th>الربح بعد الإعلان</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <p class="note">* إجمالي التكلفة = ثمن البضاعة + الإعلانات، ولا يشمل التوصيل. يفترض الحساب أن تكلفة الإعلان المدخلة هي تكلفة الحصول على طلب/بيعة واحدة.</p>`;
+  });
+
+  form.requestSubmit();
+</script>
+</body>
+</html>
