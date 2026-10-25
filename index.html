@@ -3,126 +3,166 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0f766e">
-  <title>حاسبة تكلفة التجارة وسعر البيع</title>
+  <meta name="theme-color" content="#111827">
+  <title>حاسبة التجارة الذكية | ثمن البيع والربح</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <style>
-    :root { color-scheme: light; --ink:#17212b; --muted:#64748b; --line:#dbe4e8; --teal:#0f766e; --pale:#f0fdfa; }
+    :root { --ink:#182235; --muted:#6b7280; --teal:#0f766e; --purple:#7657e8; --line:#e7eaf1; }
     * { box-sizing:border-box; }
-    body { margin:0; background:#f4f7f8; color:var(--ink); font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif; line-height:1.6; }
-    main { max-width:960px; margin:32px auto; padding:0 16px; }
-    .card { background:#fff; border:1px solid var(--line); border-radius:18px; padding:24px; box-shadow:0 8px 28px #0f172a0a; }
-    h1 { margin:0 0 6px; font-size:clamp(1.5rem,4vw,2rem); }
-    .intro { margin:0 0 22px; color:var(--muted); }
-    .form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:16px; }
-    label { display:block; font-weight:650; margin-bottom:6px; }
-    input { width:100%; border:1px solid #cbd5e1; border-radius:10px; padding:12px; font:inherit; background:white; }
-    input:focus { outline:3px solid #99f6e4; border-color:var(--teal); }
-    .hint { color:var(--muted); font-size:.87rem; margin-top:4px; }
-    button { cursor:pointer; border:0; border-radius:10px; background:var(--teal); color:#fff; padding:12px 18px; font:inherit; font-weight:700; margin-top:18px; }
-    button:hover { background:#115e59; }
-    .result { margin-top:22px; padding:18px; border-radius:14px; background:var(--pale); border:1px solid #99f6e4; }
-    .price { font-size:1.35rem; font-weight:800; color:#115e59; }
-    .table-wrap { overflow-x:auto; margin-top:18px; }
-    table { width:100%; border-collapse:collapse; min-width:680px; }
-    th,td { padding:11px 10px; border-bottom:1px solid var(--line); text-align:right; white-space:nowrap; }
-    th { background:#f8fafc; }
-    .note { color:var(--muted); font-size:.9rem; margin:16px 0 0; }
-    .error { color:#b91c1c; font-weight:600; margin-top:10px; }
-    @media (max-width:600px) { main { margin:16px auto; } .card { padding:18px; } }
+    body { min-height:100vh; color:var(--ink); background:radial-gradient(ellipse at 12% 5%,#d9f6f0 0,transparent 34%),radial-gradient(ellipse at 90% 15%,#eee7ff 0,transparent 32%),#f6f8fc; font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif; }
+    .hero { position:relative; overflow:hidden; color:white; background:linear-gradient(115deg,#111827 0%,#173f56 52%,#0f766e 100%); border-radius:28px; padding:clamp(28px,6vw,58px); box-shadow:0 24px 60px #12334427; }
+    .hero::after { content:""; position:absolute; width:270px;height:270px;border:1px solid #ffffff28;border-radius:50%; left:-70px;top:-120px;box-shadow:0 0 0 28px #ffffff09,0 0 0 58px #ffffff08; }
+    .hero-content { position:relative;z-index:1; }
+    .eyebrow { display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border:1px solid #ffffff45;background:#ffffff17;border-radius:99px;font-size:.88rem; }
+    .hero h1 { font-weight:850;letter-spacing:-.04em;line-height:1.2;margin:18px 0 12px;font-size:clamp(2rem,5vw,3.5rem); }
+    .hero p { max-width:700px;color:#e5edf2;margin:0;font-size:1.05rem; }
+    .hero-tag { display:inline-block;color:#d9fff6;background:#ffffff16;border:1px solid #ffffff2b;border-radius:12px;padding:9px 12px;margin-top:20px;font-weight:700; }
+    .main-card { margin-top:-24px;position:relative;z-index:2;border:1px solid #ffffff;border-radius:24px;background:#ffffff;box-shadow:0 18px 55px #20324713; }
+    .section-title { font-weight:800;letter-spacing:-.02em; }
+    .form-label {font-weight:700;color:#273449;}
+    .form-control { min-height:50px;border-color:#dce2eb;border-radius:12px;font-size:1rem; }
+    .form-control:focus {border-color:#36a69a;box-shadow:0 0 0 .22rem #0f766e1a;}
+    .input-group-text {background:#f7f9fc;border-color:#dce2eb;color:#596579;font-weight:700;}
+    .field-hint {font-size:.83rem;color:var(--muted);margin-top:6px;}
+    .tax-box { height:100%; padding:16px;border-radius:16px;background:linear-gradient(135deg,#f3f0ff,#f2fbfa);border:1px solid #e7e3fb; }
+    .tax-pill {display:inline-block;padding:4px 10px;background:#7657e81a;color:#5e43c3;border-radius:99px;font-size:.82rem;font-weight:800;}
+    .btn-calc {min-height:54px;border:0;border-radius:13px;color:#fff;font-weight:800;font-size:1.05rem;background:linear-gradient(100deg,#0f766e,#147eac);box-shadow:0 10px 24px #0f766e30;transition:transform .15s,box-shadow .15s;}
+    .btn-calc:hover {color:#fff;transform:translateY(-2px);box-shadow:0 14px 28px #0f766e45;}
+    .result-card {border:0;border-radius:20px;color:white;background:linear-gradient(120deg,#0f766e,#147eac);box-shadow:0 15px 30px #0f766e28;}
+    .result-label {color:#d8f4ef;font-weight:650;}
+    .result-price {font-size:clamp(2rem,5vw,3rem);line-height:1.1;font-weight:900;letter-spacing:-.04em;}
+    .metric {height:100%;padding:15px;border-radius:14px;background:#ffffff18;border:1px solid #ffffff2c;}
+    .metric small {display:block;color:#d6eee9;}
+    .metric strong {display:block;font-size:1.18rem;margin-top:4px;}
+    .table thead th {background:#f3f6fa;color:#334155;border-bottom:0;white-space:nowrap;}
+    .table>:not(caption)>*>* {padding:13px 14px;vertical-align:middle;}
+    .table tbody tr:hover {background:#f6fbfa;}
+    .note-box {background:#f8fafc;border:1px solid var(--line);border-radius:14px;color:#526075;}
+    .error-message {color:#b42318;font-weight:650;}
+    footer {color:#788397;font-size:.88rem;}
+    @media(max-width:576px){.hero{border-radius:20px}.main-card{border-radius:19px}.table>:not(caption)>*>*{padding:10px 12px}}
   </style>
 </head>
 <body>
-<main>
-  <section class="card">
-    <h1>حاسبة تكلفة التجارة وسعر البيع</h1>
-    <p class="intro">احسب تكلفة البضاعة والإعلانات، وسعر البيع الذي يحقق لك الربح المطلوب.</p>
-
-    <form id="calc-form">
-      <div class="form-grid">
-        <div>
-          <label for="unit-cost">ثمن شراء القطعة بالجملة (DH)</label>
-          <input id="unit-cost" type="number" min="0" step="0.01" value="110" required>
-        </div>
-        <div>
-          <label for="ads">تكلفة الإعلانات لكل طلب/بيعة (DH)</label>
-          <input id="ads" type="number" min="0" step="0.01" value="0" required>
-          <div class="hint">إذا كانت لديك ميزانية حملة كاملة، اقسمها على عدد الطلبات المتوقع.</div>
-        </div>
-        <div>
-          <label for="profit">الربح الصافي المطلوب لكل قطعة دون التوصيل (DH)</label>
-          <input id="profit" type="number" min="0" step="0.01" value="35" required>
-        </div>
-        <div>
-          <label for="delivery">التوصيل الذي ستتحمله أنت لكل قطعة (DH)</label>
-          <input id="delivery" type="number" min="0" step="0.01" value="0" required>
-          <div class="hint">اتركه 0 إذا كان الزبون يدفع التوصيل منفصلًا.</div>
-        </div>
-        <div>
-          <label for="quantities">الكميات المراد حسابها</label>
-          <input id="quantities" type="text" value="5, 10, 15" placeholder="مثال: 5, 10, 15">
-          <div class="hint">أدخل أرقامًا مفصولة بفواصل.</div>
-        </div>
+  <main class="container py-4 py-lg-5">
+    <header class="hero">
+      <div class="hero-content">
+        <span class="eyebrow">✦ حاسبة ذكية لتجارتك</span>
+        <h1>اعرف تكلفة كل طلب<br>وحدّد سعر البيع بثقة</h1>
+        <p>أدخل ثمن الجملة والإعلانات، ودع الحاسبة تحسب لك TVA والربح وسعر البيع المناسب في ثوانٍ.</p>
+        <span class="hero-tag">TVA الإعلانات محسوبة تلقائيًا بنسبة 20%</span>
       </div>
-      <button type="submit">احسب الآن</button>
-      <div id="error" class="error" role="alert"></div>
-    </form>
+    </header>
 
-    <div id="results" aria-live="polite"></div>
-  </section>
-</main>
-<script>
-  const form = document.getElementById('calc-form');
-  const results = document.getElementById('results');
-  const errorBox = document.getElementById('error');
-  const fmt = n => new Intl.NumberFormat('ar-MA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n) + ' DH';
-
-  form.addEventListener('submit', event => {
-    event.preventDefault();
-    errorBox.textContent = '';
-    const unitCost = Number(document.getElementById('unit-cost').value);
-    const adsPerSale = Number(document.getElementById('ads').value);
-    const profitPerUnit = Number(document.getElementById('profit').value);
-    const deliveryPerUnit = Number(document.getElementById('delivery').value);
-    const rawQuantities = document.getElementById('quantities').value;
-    const quantities = rawQuantities.split(/[،,\s]+/).filter(Boolean).map(Number);
-
-    if ([unitCost, adsPerSale, profitPerUnit, deliveryPerUnit].some(n => !Number.isFinite(n) || n < 0)) {
-      errorBox.textContent = 'تحقق من إدخال أرقام موجبة أو صفرية في خانات التكاليف والربح.';
-      return;
-    }
-    if (!quantities.length || quantities.some(q => !Number.isInteger(q) || q <= 0)) {
-      errorBox.textContent = 'أدخل كميات صحيحة أكبر من صفر، مثل 5, 10, 15.';
-      return;
-    }
-
-    const priceWithoutDelivery = unitCost + adsPerSale + profitPerUnit;
-    const priceWithDelivery = priceWithoutDelivery + deliveryPerUnit;
-    const rows = quantities.map(q => {
-      const goods = unitCost * q;
-      const ads = adsPerSale * q;
-      const costs = goods + ads;
-      const sales = priceWithoutDelivery * q;
-      const netProfit = sales - costs;
-      return `<tr><td>${q}</td><td>${fmt(goods)}</td><td>${fmt(ads)}</td><td>${fmt(costs)}</td><td>${fmt(sales)}</td><td>${fmt(netProfit)}</td></tr>`;
-    }).join('');
-
-    results.innerHTML = `
-      <section class="result">
-        <div>سعر البيع المطلوب للقطعة، دون إضافة التوصيل:</div>
-        <div class="price">${fmt(priceWithoutDelivery)}</div>
-        ${deliveryPerUnit > 0 ? `<div>إذا كنت ستتحمل التوصيل أيضًا، يصبح السعر: <strong>${fmt(priceWithDelivery)}</strong></div>` : ''}
-        <div class="hint">الحساب: ثمن الشراء + الإعلان لكل بيعة + الربح الصافي المطلوب.</div>
-      </section>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>الكمية</th><th>ثمن البضاعة</th><th>الإعلانات</th><th>إجمالي التكلفة*</th><th>إجمالي المبيعات</th><th>الربح بعد الإعلان</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
+    <section class="main-card p-3 p-md-4 p-lg-5">
+      <div class="mb-4">
+        <h2 class="h4 section-title mb-1">بيانات المنتج والحملة</h2>
+        <div class="text-secondary">القيم الافتراضية تبدأ بثمن الشراء الذي ذكرته: 110 DH وربح مطلوب 35 DH.</div>
       </div>
-      <p class="note">* إجمالي التكلفة = ثمن البضاعة + الإعلانات، ولا يشمل التوصيل. يفترض الحساب أن تكلفة الإعلان المدخلة هي تكلفة الحصول على طلب/بيعة واحدة.</p>`;
-  });
 
-  form.requestSubmit();
-</script>
+      <form id="calc-form" novalidate>
+        <div class="row g-3 g-lg-4">
+          <div class="col-12 col-md-6">
+            <label class="form-label" for="unit-cost">ثمن شراء القطعة بالجملة</label>
+            <div class="input-group"><input class="form-control" id="unit-cost" type="number" min="0" step="0.01" value="110" required><span class="input-group-text">DH</span></div>
+            <div class="field-hint">تكلفة شراء قطعة واحدة.</div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label class="form-label" for="ads">تكلفة Facebook Ads لكل طلب قبل TVA</label>
+            <div class="input-group"><input class="form-control" id="ads" type="number" min="0" step="0.01" value="0" required><span class="input-group-text">DH</span></div>
+            <div class="field-hint">أدخل تكلفة الإعلان لطلب واحد قبل الضريبة، وليس ميزانية الحملة كاملة.</div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label class="form-label" for="profit">الربح الصافي المطلوب لكل قطعة</label>
+            <div class="input-group"><input class="form-control" id="profit" type="number" min="0" step="0.01" value="35" required><span class="input-group-text">DH</span></div>
+            <div class="field-hint">الربح المستهدف بعد خصم ثمن المنتج والإعلان، دون التوصيل.</div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label class="form-label" for="delivery">التوصيل الذي ستتحمله أنت لكل قطعة</label>
+            <div class="input-group"><input class="form-control" id="delivery" type="number" min="0" step="0.01" value="0" required><span class="input-group-text">DH</span></div>
+            <div class="field-hint">اكتب 0 إذا كان الزبون يدفع التوصيل بشكل منفصل.</div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label class="form-label" for="quantities">الكميات المراد حسابها</label>
+            <input class="form-control" id="quantities" type="text" value="5, 10, 15" placeholder="مثال: 5, 10, 15" required>
+            <div class="field-hint">افصل بين الكميات بفاصلة، مثل 5, 10, 15.</div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="tax-box">
+              <div class="d-flex justify-content-between align-items-center mb-2"><strong>ضريبة الإعلان (TVA)</strong><span class="tax-pill">20% تلقائي</span></div>
+              <div class="small text-secondary">تُضاف TVA إلى تكلفة Facebook Ads، ثم يُحسب سعر البيع والربح على تكلفة الإعلان شاملة الضريبة.</div>
+            </div>
+          </div>
+          <div class="col-12"><button class="btn btn-calc w-100" type="submit">احسب التكلفة وسعر البيع <span aria-hidden="true">←</span></button><div id="error" class="error-message mt-2" role="alert"></div></div>
+        </div>
+      </form>
+
+      <div id="results" aria-live="polite"></div>
+      <footer class="text-center mt-4">الحاسبة أداة تقديرية؛ أدخل تكلفة الإعلان لكل طلب كما تظهر لك في حساب حملاتك.</footer>
+    </section>
+  </main>
+
+  <script>
+    const TVA_RATE = 0.20;
+    const form = document.getElementById('calc-form');
+    const results = document.getElementById('results');
+    const errorBox = document.getElementById('error');
+    const fmt = n => new Intl.NumberFormat('fr-MA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n) + ' DH';
+
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      errorBox.textContent = '';
+      const unitCost = Number(document.getElementById('unit-cost').value);
+      const adsBeforeTax = Number(document.getElementById('ads').value);
+      const profitPerUnit = Number(document.getElementById('profit').value);
+      const deliveryPerUnit = Number(document.getElementById('delivery').value);
+      const rawQuantities = document.getElementById('quantities').value;
+      const quantities = rawQuantities.split(/[،,\s]+/).filter(Boolean).map(Number);
+
+      if ([unitCost, adsBeforeTax, profitPerUnit, deliveryPerUnit].some(n => !Number.isFinite(n) || n < 0)) {
+        errorBox.textContent = 'تحقق من إدخال أرقام موجبة أو صفرية في خانات التكاليف والربح.';
+        results.innerHTML = '';
+        return;
+      }
+      if (!quantities.length || quantities.some(q => !Number.isInteger(q) || q <= 0)) {
+        errorBox.textContent = 'أدخل كميات صحيحة أكبر من صفر، مثل 5, 10, 15.';
+        results.innerHTML = '';
+        return;
+      }
+
+      const adsTaxPerSale = adsBeforeTax * TVA_RATE;
+      const adsWithTaxPerSale = adsBeforeTax + adsTaxPerSale;
+      const priceWithoutDelivery = unitCost + adsWithTaxPerSale + profitPerUnit;
+      const priceWithDelivery = priceWithoutDelivery + deliveryPerUnit;
+      const rows = quantities.map(q => {
+        const goods = unitCost * q;
+        const adsBase = adsBeforeTax * q;
+        const tax = adsTaxPerSale * q;
+        const adsTotal = adsWithTaxPerSale * q;
+        const costs = goods + adsTotal;
+        const sales = priceWithoutDelivery * q;
+        const netProfit = sales - costs;
+        return `<tr><td class="fw-bold">${q}</td><td>${fmt(goods)}</td><td>${fmt(adsBase)}</td><td>${fmt(tax)}</td><td>${fmt(adsTotal)}</td><td>${fmt(costs)}</td><td>${fmt(sales)}</td><td class="fw-bold text-success">${fmt(netProfit)}</td></tr>`;
+      }).join('');
+
+      results.innerHTML = `
+        <section class="result-card p-3 p-md-4 mt-4">
+          <div class="row g-3 align-items-center">
+            <div class="col-12 col-lg-5"><div class="result-label mb-2">سعر البيع المطلوب للقطعة دون التوصيل</div><div class="result-price">${fmt(priceWithoutDelivery)}</div>${deliveryPerUnit > 0 ? `<div class="mt-2">مع إضافة التوصيل الذي تتحمله: <strong>${fmt(priceWithDelivery)}</strong></div>` : ''}</div>
+            <div class="col-12 col-lg-7"><div class="row g-2">
+              <div class="col-6"><div class="metric"><small>الإعلان قبل TVA</small><strong>${fmt(adsBeforeTax)}</strong></div></div>
+              <div class="col-6"><div class="metric"><small>TVA ‏(20%) لكل طلب</small><strong>${fmt(adsTaxPerSale)}</strong></div></div>
+              <div class="col-12"><div class="metric"><small>الإعلان شامل TVA لكل طلب</small><strong>${fmt(adsWithTaxPerSale)}</strong></div></div>
+            </div></div>
+          </div>
+          <div class="small mt-3" style="color:#d8f4ef">المعادلة: ثمن الشراء + الإعلان بعد إضافة TVA 20% + الربح الصافي المطلوب.</div>
+        </section>
+        <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mt-4 mb-2"><div><h3 class="h5 section-title mb-1">ملخص الكميات</h3><div class="small text-secondary">التكاليف الإجمالية تشمل TVA على الإعلانات.</div></div></div>
+        <div class="table-responsive rounded-3 border"><table class="table table-hover mb-0"><thead><tr><th>الكمية</th><th>ثمن البضاعة</th><th>الإعلان قبل TVA</th><th>TVA ‏20%</th><th>الإعلان شامل TVA</th><th>إجمالي التكلفة*</th><th>إجمالي المبيعات</th><th>الربح الصافي</th></tr></thead><tbody>${rows}</tbody></table></div>
+        <div class="note-box p-3 mt-3 small">* إجمالي التكلفة = ثمن البضاعة + الإعلان شامل TVA، ولا يشمل التوصيل. يفترض الحساب أن تكلفة الإعلان المدخلة هي تكلفة الحصول على طلب واحد قبل TVA.</div>`;
+    });
+    form.requestSubmit();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
