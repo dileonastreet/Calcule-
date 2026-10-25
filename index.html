@@ -6,11 +6,10 @@
   <meta name="theme-color" content="#123143">
   <title>حاسبة التاجر | حساب التكلفة والربح</title>
 
-  <!-- Bootstrap RTL -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css"
-        rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-        crossorigin="anonymous">
+  <!-- Bootstrap بتنسيق يدعم اللغة العربية واتجاه RTL -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css"
+    rel="stylesheet">
 
   <style>
     :root {
@@ -20,7 +19,6 @@
       --brand: #087e78;
       --brand-dark: #075b58;
       --canvas: #f3f6f7;
-      --soft: #edf7f5;
     }
 
     * { box-sizing: border-box; }
@@ -34,22 +32,21 @@
       line-height: 1.65;
     }
 
-    .page-shell { max-width: 1120px; }
+    .page-shell { max-width: 1100px; }
 
     .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding: 7px 2px 20px;
+      padding: 8px 2px 18px;
     }
 
-    .brand-lockup {
+    .brand {
       display: flex;
       align-items: center;
       gap: 10px;
       font-weight: 800;
-      letter-spacing: -.02em;
     }
 
     .brand-mark {
@@ -57,210 +54,145 @@
       place-items: center;
       width: 38px;
       height: 38px;
-      border-radius: 12px;
-      color: #fff;
+      border-radius: 11px;
+      color: white;
       background: var(--brand);
-      font-weight: 900;
-      font-size: 1.05rem;
-      box-shadow: 0 5px 12px #087e782b;
     }
 
     .topbar-note { color: var(--muted); font-size: .88rem; }
 
     .hero {
-      position: relative;
-      overflow: hidden;
-      border-radius: 22px;
-      padding: clamp(26px, 5vw, 48px);
-      color: #fff;
-      background: linear-gradient(112deg, #123143 0%, #174d59 60%, #087e78 100%);
-      box-shadow: 0 15px 36px #18384b1c;
+      padding: clamp(24px, 5vw, 46px);
+      border-radius: 20px;
+      color: white;
+      background: linear-gradient(115deg, #123143, #174d59 60%, #087e78);
+      box-shadow: 0 14px 34px #18384b1c;
     }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      width: 230px;
-      height: 230px;
-      border-radius: 50%;
-      left: -100px;
-      bottom: -165px;
-      border: 1px solid #ffffff2b;
-      box-shadow: 0 0 0 24px #ffffff08, 0 0 0 49px #ffffff08;
-    }
-
-    .hero-content { position: relative; z-index: 1; max-width: 760px; }
 
     .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      display: inline-block;
       padding: 5px 11px;
       border: 1px solid #ffffff40;
-      border-radius: 99px;
+      border-radius: 30px;
+      color: #e2fff7;
       background: #ffffff12;
-      color: #d7f3ee;
-      font-size: .83rem;
-      font-weight: 650;
+      font-size: .85rem;
     }
 
     .hero h1 {
-      margin: 15px 0 10px;
-      max-width: 700px;
+      margin: 15px 0 9px;
       font-size: clamp(1.8rem, 4vw, 3rem);
-      line-height: 1.25;
+      line-height: 1.3;
       font-weight: 800;
-      letter-spacing: -.035em;
     }
 
-    .hero p { max-width: 650px; margin: 0; color: #e0ecef; font-size: 1rem; }
+    .hero p { margin: 0; color: #e0ecef; }
 
-    .tax-banner {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 19px;
-      padding: 8px 12px;
-      border-radius: 9px;
-      background: #ffffff14;
-      border: 1px solid #ffffff2b;
-      color: #e2fff7;
-      font-size: .88rem;
-      font-weight: 700;
-    }
-
-    .content-card {
-      position: relative;
+    .card-main {
       margin-top: 20px;
       padding: clamp(18px, 3.5vw, 34px);
       border: 1px solid var(--line);
-      border-radius: 20px;
-      background: #fff;
+      border-radius: 18px;
+      background: white;
       box-shadow: 0 8px 28px #1732470a;
     }
 
-    .section-heading { display: flex; align-items: flex-start; gap: 13px; margin-bottom: 22px; }
-
-    .section-number {
-      flex: 0 0 34px;
-      display: grid;
-      place-items: center;
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: var(--soft);
-      color: var(--brand-dark);
-      font-weight: 800;
-    }
-
-    .section-heading h2 { margin: 0 0 3px; font-size: 1.15rem; font-weight: 800; }
-    .section-heading p { margin: 0; color: var(--muted); font-size: .9rem; }
-    .form-label { margin-bottom: 7px; color: #263b49; font-size: .93rem; font-weight: 700; }
+    .section-title { font-size: 1.15rem; font-weight: 800; }
+    .section-subtitle { color: var(--muted); font-size: .9rem; }
+    .form-label { color: #263b49; font-weight: 700; }
 
     .form-control {
       min-height: 48px;
       border-color: #d8e1e5;
       border-radius: 10px;
-      color: var(--ink);
-      font-size: 1rem;
     }
 
-    .form-control:focus { border-color: #40a59c; box-shadow: 0 0 0 .2rem #087e7818; }
-    .input-group-text { border-color: #d8e1e5; background: #f7f9fa; color: #5e6f7a; font-weight: 700; }
-    .input-group .form-control:not(:last-child) { border-radius: 10px 0 0 10px; }
-    .input-group .input-group-text { border-radius: 0 10px 10px 0; }
-    .field-hint { margin-top: 5px; color: var(--muted); font-size: .81rem; line-height: 1.5; }
+    .form-control:focus {
+      border-color: #40a59c;
+      box-shadow: 0 0 0 .2rem #087e7818;
+    }
 
-    .tax-box {
+    .input-group-text {
+      border-color: #d8e1e5;
+      background: #f7f9fa;
+      color: #5e6f7a;
+      font-weight: 700;
+    }
+
+    .hint { margin-top: 5px; color: var(--muted); font-size: .82rem; }
+
+    .tax-info {
       height: 100%;
-      min-height: 100px;
-      padding: 15px 16px;
+      padding: 15px;
       border: 1px solid #d9e9e6;
       border-radius: 12px;
       background: #f5faf9;
     }
 
-    .tax-pill {
-      display: inline-block;
-      padding: 3px 9px;
-      border-radius: 99px;
-      background: #dff2ee;
+    .tax-badge {
+      padding: 4px 9px;
+      border-radius: 30px;
       color: #09645f;
-      font-size: .78rem;
+      background: #dff2ee;
+      font-size: .8rem;
       font-weight: 800;
     }
 
-    .btn-calc {
+    .btn-calculate {
       min-height: 50px;
       border: 0;
-      border-radius: 11px;
+      border-radius: 10px;
+      color: white;
       background: var(--brand);
-      color: #fff;
       font-weight: 750;
-      font-size: 1rem;
-      transition: background .15s, transform .15s;
     }
 
-    .btn-calc:hover, .btn-calc:focus { background: var(--brand-dark); color: #fff; transform: translateY(-1px); }
+    .btn-calculate:hover { color: white; background: var(--brand-dark); }
 
-    .result-card { border: 1px solid #d7ebe7; border-radius: 16px; background: #f2faf8; }
-    .result-label { color: #49656a; font-size: .91rem; font-weight: 700; }
-    .result-price { margin-top: 3px; color: #086c66; font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.2; font-weight: 850; letter-spacing: -.035em; }
-    .metric { height: 100%; padding: 12px 14px; border: 1px solid #dfebe9; border-radius: 11px; background: #fff; }
-    .metric small { display: block; color: var(--muted); font-size: .8rem; }
-    .metric strong { display: block; margin-top: 3px; color: var(--ink); font-size: 1.05rem; }
-    .calculation-note { color: #5c7379; font-size: .82rem; }
-
-    .table-heading { margin: 24px 0 10px; }
-    .table-heading h3 { margin: 0; font-size: 1.05rem; font-weight: 800; }
-    .table-heading p { margin: 3px 0 0; color: var(--muted); font-size: .84rem; }
-
-    .table-frame { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
-    .table { min-width: 850px; margin: 0; }
-    .table thead th {
-      padding: 12px 13px;
-      border-bottom: 1px solid var(--line);
-      background: #f6f8f9;
-      color: #425560;
-      font-size: .84rem;
-      white-space: nowrap;
+    .result-box {
+      margin-top: 22px;
+      padding: 20px;
+      border: 1px solid #d7ebe7;
+      border-radius: 15px;
+      background: #f2faf8;
     }
 
-    .table tbody td { padding: 12px 13px; border-color: #edf0f2; color: #344956; font-size: .9rem; white-space: nowrap; }
-    .table tbody tr:last-child td { border-bottom: 0; }
-    .table tbody tr:hover { background: #f8fbfb; }
+    .result-label { color: #49656a; font-weight: 700; }
+    .result-price { color: #086c66; font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 850; }
 
-    .note-box {
-      padding: 12px 14px;
+    .metric {
+      height: 100%;
+      padding: 12px;
+      border: 1px solid #dfebe9;
+      border-radius: 10px;
+      background: white;
+    }
+
+    .metric small { display: block; color: var(--muted); }
+    .metric strong { display: block; margin-top: 4px; }
+
+    .table-wrap {
+      overflow-x: auto;
       border: 1px solid var(--line);
-      border-radius: 11px;
-      background: #f8fafb;
-      color: #5c6c76;
-      font-size: .83rem;
+      border-radius: 12px;
     }
 
-    .error-message { color: #b42318; font-weight: 650; }
-    footer { padding: 20px 8px 6px; color: #77858d; text-align: center; font-size: .82rem; }
-
-    @media (min-width: 992px) {
-      .content-card { margin-top: 24px; }
-    }
+    .table { min-width: 820px; margin: 0; }
+    .table thead th { background: #f6f8f9; white-space: nowrap; }
+    .table th, .table td { padding: 12px; vertical-align: middle; white-space: nowrap; }
+    .error { color: #b42318; font-weight: 650; }
+    footer { padding-top: 20px; color: var(--muted); text-align: center; font-size: .82rem; }
 
     @media (max-width: 575.98px) {
-      .page-shell { padding-left: 13px; padding-right: 13px; }
-      .topbar { padding-bottom: 14px; }
-      .topbar-note { font-size: .76rem; }
-      .brand-lockup { font-size: .9rem; }
-      .brand-mark { width: 34px; height: 34px; border-radius: 10px; }
-      .hero { border-radius: 16px; padding: 24px 20px; }
-      .hero h1 { font-size: 1.8rem; }
-      .hero p { font-size: .92rem; }
-      .tax-banner { font-size: .79rem; }
-      .content-card { margin-top: 14px; padding: 18px 15px; border-radius: 16px; }
-      .tax-box { min-height: auto; }
-      .metric { padding: 10px; }
-      .metric strong { font-size: .96rem; }
-      .table-heading { margin-top: 20px; }
+      .page-shell { padding-right: 13px; padding-left: 13px; }
+      .topbar { padding-bottom: 13px; }
+      .topbar-note { font-size: .75rem; }
+      .brand { font-size: .9rem; }
+      .brand-mark { width: 34px; height: 34px; }
+      .hero { padding: 23px 18px; border-radius: 15px; }
+      .hero h1 { font-size: 1.75rem; }
+      .card-main { margin-top: 14px; padding: 18px 15px; border-radius: 15px; }
+      .tax-info { min-height: auto; }
     }
   </style>
 </head>
@@ -268,7 +200,7 @@
 <body>
   <main class="container page-shell py-3 py-lg-4">
     <div class="topbar">
-      <div class="brand-lockup">
+      <div class="brand">
         <span class="brand-mark">ح</span>
         <span>حاسبة التاجر</span>
       </div>
@@ -276,202 +208,217 @@
     </div>
 
     <header class="hero">
-      <div class="hero-content">
-        <span class="eyebrow">حاسبة عملية لتجارتك</span>
-        <h1>اعرف تكلفة كل طلب<br>وحدّد سعر البيع بثقة</h1>
-        <p>أدخل ثمن الجملة والإعلانات، ودع الحاسبة تحسب لك TVA والربح وسعر البيع المناسب في ثوانٍ.</p>
-        <span class="tax-banner">TVA الإعلانات محسوبة تلقائيًا بنسبة 20%</span>
-      </div>
+      <span class="eyebrow">حساب التكلفة والربح</span>
+      <h1>اعرف تكلفة كل طلب<br>وحدّد سعر البيع بثقة</h1>
+      <p>أدخل ثمن الشراء والإعلان، وستحسب الحاسبة الضريبة والربح وسعر البيع المناسب.</p>
     </header>
 
-    <section class="content-card">
-      <div class="section-heading">
-        <span class="section-number">1</span>
-        <div>
-          <h2>بيانات المنتج والحملة</h2>
-          <p>القيم الافتراضية: ثمن شراء 110 DH وربح مطلوب 35 DH.</p>
-        </div>
-      </div>
+    <section class="card-main">
+      <h2 class="section-title mb-1">بيانات المنتج والحملة</h2>
+      <p class="section-subtitle mb-4">
+        ثمن الشراء الافتراضي 110 DH، والربح المطلوب 35 DH.
+      </p>
 
-      <form id="calc-form" novalidate>
-        <div class="row g-3 g-lg-4">
+      <form id="calc-form">
+        <div class="row g-3">
           <div class="col-12 col-md-6">
             <label class="form-label" for="unit-cost">ثمن شراء القطعة بالجملة</label>
             <div class="input-group">
-              <input class="form-control" id="unit-cost" type="number" min="0" step="0.01" value="110" required>
+              <input class="form-control" id="unit-cost" type="number" min="0" step="0.01" value="110">
               <span class="input-group-text">DH</span>
             </div>
-            <div class="field-hint">تكلفة شراء قطعة واحدة.</div>
+            <div class="hint">ثمن شراء قطعة واحدة.</div>
           </div>
 
           <div class="col-12 col-md-6">
-            <label class="form-label" for="ads">تكلفة Facebook Ads لكل طلب قبل TVA</label>
+            <label class="form-label" for="ads">تكلفة الإعلان لكل طلب قبل TVA</label>
             <div class="input-group">
-              <input class="form-control" id="ads" type="number" min="0" step="0.01" value="0" required>
+              <input class="form-control" id="ads" type="number" min="0" step="0.01" value="0">
               <span class="input-group-text">DH</span>
             </div>
-            <div class="field-hint">أدخل تكلفة الإعلان لطلب واحد قبل الضريبة، وليس ميزانية الحملة كاملة.</div>
+            <div class="hint">أدخل تكلفة الإعلان لطلب واحد قبل الضريبة، وليس ميزانية الحملة كاملة.</div>
           </div>
 
           <div class="col-12 col-md-6">
             <label class="form-label" for="profit">الربح الصافي المطلوب لكل قطعة</label>
             <div class="input-group">
-              <input class="form-control" id="profit" type="number" min="0" step="0.01" value="35" required>
+              <input class="form-control" id="profit" type="number" min="0" step="0.01" value="35">
               <span class="input-group-text">DH</span>
             </div>
-            <div class="field-hint">الربح المستهدف بعد خصم ثمن المنتج والإعلان، دون التوصيل.</div>
+            <div class="hint">الربح المطلوب دون التوصيل.</div>
           </div>
 
           <div class="col-12 col-md-6">
             <label class="form-label" for="delivery">التوصيل الذي ستتحمله أنت لكل قطعة</label>
             <div class="input-group">
-              <input class="form-control" id="delivery" type="number" min="0" step="0.01" value="0" required>
+              <input class="form-control" id="delivery" type="number" min="0" step="0.01" value="0">
               <span class="input-group-text">DH</span>
             </div>
-            <div class="field-hint">اكتب 0 إذا كان الزبون يدفع التوصيل بشكل منفصل.</div>
+            <div class="hint">اتركه صفرًا إذا كان الزبون يدفع التوصيل منفصلًا.</div>
           </div>
 
           <div class="col-12 col-md-6">
             <label class="form-label" for="quantities">الكميات المراد حسابها</label>
-            <input class="form-control" id="quantities" type="text" value="5, 10, 15" placeholder="مثال: 5, 10, 15" required>
-            <div class="field-hint">افصل بين الكميات بفاصلة، مثل 5, 10, 15.</div>
+            <input class="form-control" id="quantities" type="text" value="5, 10, 15" placeholder="مثال: 5, 10, 15">
+            <div class="hint">اكتب الكميات مفصولة بفواصل.</div>
           </div>
 
           <div class="col-12 col-md-6">
-            <div class="tax-box">
+            <div class="tax-info">
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <strong>ضريبة الإعلان (TVA)</strong>
-                <span class="tax-pill">20% تلقائي</span>
+                <span class="tax-badge">20% تلقائيًا</span>
               </div>
               <div class="small text-secondary">
-                تُضاف TVA إلى تكلفة Facebook Ads، ثم يُحسب سعر البيع والربح على تكلفة الإعلان شاملة الضريبة.
+                تُضاف الضريبة إلى تكلفة الإعلان، ثم تُستخدم التكلفة بعد الضريبة في حساب السعر والربح.
               </div>
             </div>
           </div>
 
           <div class="col-12">
-            <button class="btn btn-calc w-100" type="submit">احسب التكلفة وسعر البيع</button>
-            <div id="error" class="error-message mt-2" role="alert"></div>
+            <button class="btn btn-calculate w-100" type="submit">
+              احسب التكلفة وسعر البيع
+            </button>
+            <div id="error" class="error mt-2" role="alert"></div>
           </div>
         </div>
       </form>
 
       <div id="results" aria-live="polite"></div>
-      <footer>الحاسبة أداة تقديرية؛ أدخل تكلفة الإعلان لكل طلب كما تظهر لك في حساب حملاتك.</footer>
+      <footer>جدول النتائج قابل للتمرير أفقيًا على شاشات الهاتف.</footer>
     </section>
   </main>
 
   <script>
     const TVA_RATE = 0.20;
+
     const form = document.getElementById("calc-form");
     const results = document.getElementById("results");
     const errorBox = document.getElementById("error");
 
-    const fmt = value =>
-      new Intl.NumberFormat("fr-MA", {
+    function formatDH(amount) {
+      return new Intl.NumberFormat("fr-MA", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
-      }).format(value) + " DH";
+      }).format(amount) + " DH";
+    }
 
-    form.addEventListener("submit", event => {
-      event.preventDefault();
+    function calculate(event) {
+      if (event) event.preventDefault();
+
       errorBox.textContent = "";
+      results.innerHTML = "";
 
       const unitCost = Number(document.getElementById("unit-cost").value);
       const adsBeforeTax = Number(document.getElementById("ads").value);
-      const profitPerUnit = Number(document.getElementById("profit").value);
-      const deliveryPerUnit = Number(document.getElementById("delivery").value);
-      const rawQuantities = document.getElementById("quantities").value;
-      const quantities = rawQuantities
+      const desiredProfit = Number(document.getElementById("profit").value);
+      const delivery = Number(document.getElementById("delivery").value);
+
+      const quantityText = document.getElementById("quantities").value;
+      const quantities = quantityText
         .split(/[،,\s]+/)
         .filter(Boolean)
         .map(Number);
 
-      if ([unitCost, adsBeforeTax, profitPerUnit, deliveryPerUnit]
-          .some(value => !Number.isFinite(value) || value < 0)) {
-        errorBox.textContent = "تحقق من إدخال أرقام موجبة أو صفرية في خانات التكاليف والربح.";
-        results.innerHTML = "";
+      const values = [unitCost, adsBeforeTax, desiredProfit, delivery];
+
+      if (values.some(value => !Number.isFinite(value) || value < 0)) {
+        errorBox.textContent = "تأكد من إدخال أرقام صحيحة موجبة أو صفرية.";
         return;
       }
 
-      if (!quantities.length || quantities.some(q => !Number.isInteger(q) || q <= 0)) {
+      if (quantities.length === 0 ||
+          quantities.some(quantity => !Number.isInteger(quantity) || quantity <= 0)) {
         errorBox.textContent = "أدخل كميات صحيحة أكبر من صفر، مثل 5, 10, 15.";
-        results.innerHTML = "";
         return;
       }
 
-      const adsTaxPerSale = adsBeforeTax * TVA_RATE;
-      const adsWithTaxPerSale = adsBeforeTax + adsTaxPerSale;
-      const priceWithoutDelivery = unitCost + adsWithTaxPerSale + profitPerUnit;
-      const priceWithDelivery = priceWithoutDelivery + deliveryPerUnit;
+      const adTaxPerOrder = adsBeforeTax * TVA_RATE;
+      const adsWithTax = adsBeforeTax + adTaxPerOrder;
 
-      const rows = quantities.map(quantity => {
-        const goods = unitCost * quantity;
-        const adsBase = adsBeforeTax * quantity;
-        const tax = adsTaxPerSale * quantity;
-        const adsTotal = adsWithTaxPerSale * quantity;
-        const totalCosts = goods + adsTotal;
-        const totalSales = priceWithoutDelivery * quantity;
-        const netProfit = totalSales - totalCosts;
+      // سعر البيع = ثمن المنتج + الإعلان بعد TVA + الربح المطلوب
+      const sellingPrice = unitCost + adsWithTax + desiredProfit;
+      const priceIncludingDelivery = sellingPrice + delivery;
+
+      const tableRows = quantities.map(quantity => {
+        const goodsTotal = unitCost * quantity;
+        const adsBeforeTaxTotal = adsBeforeTax * quantity;
+        const taxTotal = adTaxPerOrder * quantity;
+        const adsAfterTaxTotal = adsWithTax * quantity;
+        const totalCost = goodsTotal + adsAfterTaxTotal;
+        const salesTotal = sellingPrice * quantity;
+        const profitTotal = salesTotal - totalCost;
 
         return `
           <tr>
-            <td class="fw-bold"><LaTex>{quantity}</td>             <td></LaTex>{fmt(goods)}</td>
-            <td><LaTex>{fmt(adsBase)}</td>             <td></LaTex>{fmt(tax)}</td>
-            <td><LaTex>{fmt(adsTotal)}</td>             <td></LaTex>{fmt(totalCosts)}</td>
-            <td><LaTex>{fmt(totalSales)}</td>             <td class="fw-bold text-success"></LaTex>{fmt(netProfit)}</td>
+            <td class="fw-bold"><LaTex>{quantity}</td>             <td></LaTex>{formatDH(goodsTotal)}</td>
+            <td><LaTex>{formatDH(adsBeforeTaxTotal)}</td>             <td></LaTex>{formatDH(taxTotal)}</td>
+            <td><LaTex>{formatDH(adsAfterTaxTotal)}</td>             <td></LaTex>{formatDH(totalCost)}</td>
+            <td><LaTex>{formatDH(salesTotal)}</td>             <td class="fw-bold text-success"></LaTex>{formatDH(profitTotal)}</td>
           </tr>`;
       }).join("");
 
       results.innerHTML = `
-        <section class="result-card p-3 p-md-4 mt-4">
+        <section class="result-box">
           <div class="row g-3 align-items-center">
             <div class="col-12 col-lg-5">
               <div class="result-label">سعر البيع المطلوب للقطعة دون التوصيل</div>
-              <div class="result-price"><LaTex>{fmt(priceWithoutDelivery)}</div></LaTex>{deliveryPerUnit > 0
-                ? `<div class="mt-2">إذا تحملت التوصيل: <strong><LaTex>{fmt(priceWithDelivery)}</strong></div>`                 : ""}             </div>             <div class="col-12 col-lg-7">               <div class="row g-2">                 <div class="col-6">                   <div class="metric"><small>الإعلان قبل TVA</small><strong></LaTex>{fmt(adsBeforeTax)}</strong></div>
+              <div class="result-price"><LaTex>{formatDH(sellingPrice)}</div></LaTex>{delivery > 0
+                ? `<div class="mt-2">إذا تحملت التوصيل: <strong>${formatDH(priceIncludingDelivery)}</strong></div>`
+                : ""}
+            </div>
+
+            <div class="col-12 col-lg-7">
+              <div class="row g-2">
+                <div class="col-6">
+                  <div class="metric">
+                    <small>الإعلان قبل TVA</small>
+                    <strong>${formatDH(adsBeforeTax)}</strong>
+                  </div>
                 </div>
                 <div class="col-6">
-                  <div class="metric"><small>TVA ‏20% لكل طلب</small><strong><LaTex>{fmt(adsTaxPerSale)}</strong></div>                 </div>                 <div class="col-12">                   <div class="metric"><small>الإعلان شامل TVA لكل طلب</small><strong></LaTex>{fmt(adsWithTaxPerSale)}</strong></div>
+                  <div class="metric">
+                    <small>TVA ‏20% لكل طلب</small>
+                    <strong><LaTex>{formatDH(adTaxPerOrder)}</strong>                   </div>                 </div>                 <div class="col-12">                   <div class="metric">                     <small>الإعلان شامل TVA لكل طلب</small>                     <strong></LaTex>{formatDH(adsWithTax)}</strong>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="calculation-note mt-3">
-            المعادلة: ثمن الشراء + الإعلان بعد إضافة TVA ‏20% + الربح الصافي المطلوب.
-          </div>
         </section>
 
-        <div class="table-heading">
-          <h3>ملخص الكميات</h3>
-          <p>التكاليف الإجمالية تشمل TVA على الإعلانات.</p>
-        </div>
-
-        <div class="table-frame">
+        <h3 class="h5 fw-bold mt-4 mb-2">ملخص الكميات</h3>
+        <div class="table-wrap">
           <table class="table table-hover">
             <thead>
               <tr>
                 <th>الكمية</th>
                 <th>ثمن البضاعة</th>
                 <th>الإعلان قبل TVA</th>
-                <th>TVA ‏20%</th>
+                <th>TVA 20%</th>
                 <th>الإعلان شامل TVA</th>
                 <th>إجمالي التكلفة*</th>
                 <th>إجمالي المبيعات</th>
                 <th>الربح الصافي</th>
               </tr>
             </thead>
-            <tbody>${rows}</tbody>
+            <tbody>${tableRows}</tbody>
           </table>
         </div>
 
-        <div class="note-box mt-3">
-          * إجمالي التكلفة = ثمن البضاعة + الإعلان شامل TVA، ولا يشمل التوصيل.
-          يفترض الحساب أن تكلفة الإعلان المدخلة هي تكلفة الحصول على طلب واحد قبل TVA.
-        </div>`;
-    });
+        <p class="hint mt-3">
+          * إجمالي التكلفة يشمل ثمن البضاعة والإعلان بعد إضافة TVA، ولا يشمل التوصيل.
+        </p>`;
+    }
 
-    form.requestSubmit();
+    // الحساب عند الضغط على الزر
+    form.addEventListener("submit", calculate);
+
+    // إعادة الحساب عند تغيير أي قيمة
+    form.addEventListener("input", calculate);
+
+    // عرض نتيجة أولية عند فتح الصفحة
+    calculate();
   </script>
 </body>
 </html>
